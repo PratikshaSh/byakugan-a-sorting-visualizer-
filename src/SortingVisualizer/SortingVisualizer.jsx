@@ -17,10 +17,19 @@ componentDidMount(){
 resetArray(){
     const array = [];
     for(let i=0;i<270;i++){
-        array.push(randomIntFromInterval(5,550));
+        array.push(randomIntFromInterval(5,500));
     }
     this.setState({array});
 }
+mergeSort() {}
+
+quickSort() {}
+
+heapSort() {}
+
+bubbleSort() {}
+
+
  render(){
   const {array} = this.state;
   return (
@@ -33,6 +42,11 @@ resetArray(){
             height: `${value}px`
           }}></div>
       ))}
+      <button onClick={() => this.resetArray()}>Generate New Array</button>
+      <button onClick={() => this.mergeSort()}>Merge Sort</button>
+        <button onClick={() => this.quickSort()}>Quick Sort</button>
+        <button onClick={() => this.heapSort()}>Heap Sort</button>
+        <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
       </div>
   );
   }
