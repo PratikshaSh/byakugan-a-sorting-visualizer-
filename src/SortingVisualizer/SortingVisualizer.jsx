@@ -1,5 +1,5 @@
 import React from 'react';
-
+import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
 import './SortingVisualizer.css';
 
 export class SortingVisualizer extends React.Component{
@@ -21,13 +21,19 @@ resetArray(){
     }
     this.setState({array});
 }
-mergeSort() {}
+mergeSort() {
+  const javaScriptSortedArray = this.state.array.slice().sort((a,b)=> a-b);
+  const sortedArray = SortingAlgorithms.mergeSort(this.state.array);
+
+  console.log(arraysAreEqual(javaScriptSortedArray,sortedArray));
+}
 
 quickSort() {}
 
 heapSort() {}
 
 bubbleSort() {}
+
 
 
  render(){
@@ -55,4 +61,13 @@ bubbleSort() {}
 function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max-min+1)+min);
 }
+
+function arraysAreEqual(arrayOne, arrayTwo){
+  if(arrayOne.length !== arrayTwo.length) return false;
+  for(let i=0;i<arrayOne.length;i++){
+    if(arrayOne[i] !== arrayTwo[i]) return false;
+  }
+  return true;
+}
+
 export default SortingVisualizer;
