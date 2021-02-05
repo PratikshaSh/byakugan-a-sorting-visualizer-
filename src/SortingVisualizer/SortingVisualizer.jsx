@@ -1,8 +1,11 @@
 import React from 'react';
-import * as SortingAlgorithms from '../SortingAlgorithms/SortingAlgorithms.js'
+import {getMergeSortAnimations} from '../SortingAlgorithms/SortingAlgorithms.js';
 import './SortingVisualizer.css';
 
-export class SortingVisualizer extends React.Component{
+const ANIMATION_SPEED_MS =3;
+const NUMBER_OF_ARRAY_BARS = 270;
+
+export default class SortingVisualizer extends React.Component{
 constructor(props){
     super(props);
 
@@ -16,17 +19,39 @@ componentDidMount(){
 
 resetArray(){
     const array = [];
-    for(let i=0;i<270;i++){
+    for(let i=0;i<NUMBER_OF_ARRAY_BARS;i++){
         array.push(randomIntFromInterval(5,500));
     }
     this.setState({array});
 }
 mergeSort() {
-  const javaScriptSortedArray = this.state.array.slice().sort((a,b)=> a-b);
-  const sortedArray = SortingAlgorithms.mergeSort(this.state.array);
+  const animations = getMergeSortAnimations(this.state.array);
+ 
+ for(let i=0;i< animations.length;i++){
+   const arrayBars = document.getElementsByClassName('array-bar');
+   const isColorChange = i%3 !== 2;
+   if(isColorChange){
+   const [barOneIdx, barTwoIdx] = animations[i];
+   const barOneStyle = arrayBars[barOneIdx].style;
+   const barTwoStyle = arrayBars[barTwoIdx].style;
+   const color = i%3 === 0? 'red': 'turqoise';
+     setTimeout(() => {
+       barOneStyle.backgroundColor = color;
+       barTwoStyle.backgroundColor = color;
+     },i*ANIMATION_SPEED_MS);
 
-  console.log(arraysAreEqual(javaScriptSortedArray,sortedArray));
+ }else{
+   setTimeout(()=>{
+    const [barOneIdx , newHeight] = animations[i];
+    const barOneStyle = arrayBars[barOneIdx].style;
+     barOneStyle.height = `${newHeight}px`;
+     
+   },i*ANIMATION_SPEED_MS);
+ }
 }
+}
+
+
 
 quickSort() {}
 
@@ -43,7 +68,7 @@ testSortingAlgorithms(){
    }
  
   const javaScriptSortedArray = array.slice().sort((a,b)=> a-b);
-  const mergeSortedArray = SortingAlgorithms.mergeSort(array.slice());
+  const mergeSortedArray = getMergeSortAnimations(array.slice());
   console.log(arraysAreEqual(javaScriptSortedArray,mergeSortedArray));
  }
 }
@@ -83,4 +108,3 @@ function arraysAreEqual(arrayOne, arrayTwo){
   return true;
 }
 
-export default SortingVisualizer;
